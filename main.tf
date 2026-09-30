@@ -1,0 +1,33 @@
+provider "aws" {
+  region = "ap-south-1"
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["al2023-ami-*-x86_64"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+}
+
+resource "aws_instance" "machine-1" {
+  ami           = data.aws_ami.amazon_linux.id
+  instance_type = "t3.micro"
+  key_name      = "devops-keys"
+  user_data     = <<-EOF
+                  #!/bin/bash
+                    echo "OKAY MICHAEL WE ARE HERE" > /tmp/note.txt
+                    EOF   
+
+  tags = {
+    Name = "TF-machine-1"
+  }
+
+}
