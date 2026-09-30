@@ -25,6 +25,21 @@ resource "aws_instance" "machine-1" {
                   #!/bin/bash
                     echo "OKAY MICHAEL WE ARE HERE" > /tmp/note.txt
                     EOF   
+  provisioner "remote-exec" {
+    inline = [
+      "sudo yum update -y",
+      "sudo yum install -y httpd",
+      "sudo systemctl start httpd",
+      "sudo systemctl enable httpd"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file(pathexpand("~/.ssh/devops-keys.pem"))
+      host        = self.public_ip
+    }
+  }
 
   tags = {
     Name = "TF-machine-1"
