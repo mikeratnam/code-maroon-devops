@@ -33,7 +33,10 @@ pipeline {
                         sh 'TF_VAR_ssh_key_path="$SSH_KEY" terraform apply -auto-approve'
                     }
                 }
-            }
+            }  catch (err) {
+                sh 'terraform destroy -auto-approve'
+                throw err
+            }    
         }
     }
 }
