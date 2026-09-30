@@ -20,7 +20,12 @@ pipeline {
                         usernameVariable: 'SSH_USER'
                     )
                 ]) {
-                    sh 'TF_VAR_ssh_key_path="$SSH_KEY" terraform apply -auto-approve'
+                    withCredentials([
+                        [$class: 'AmazonWebServicesCredentialsBinding',
+                         credentialsId: 'aws-terraform']
+                    ]) {
+                        sh 'TF_VAR_ssh_key_path="$SSH_KEY" terraform apply -auto-approve'
+                    }
                 }
             }
         }
