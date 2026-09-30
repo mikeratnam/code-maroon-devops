@@ -19,6 +19,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
+                try {
                 withCredentials([
                     sshUserPrivateKey(
                         credentialsId: 'tf-ec2-key',
