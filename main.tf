@@ -17,6 +17,9 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
+variable "ssh_key_path" {
+  type = string
+}
 resource "aws_instance" "machine-1" {
   ami           = data.aws_ami.amazon_linux.id
   instance_type = "t3.micro"
@@ -33,9 +36,7 @@ resource "aws_instance" "machine-1" {
       "sudo systemctl enable httpd"
     ]
 
-    variable "ssh_key_path" {
-      type = string
-    }
+
     connection {
       type        = "ssh"
       user        = "ec2-user"
