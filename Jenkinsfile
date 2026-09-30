@@ -45,8 +45,22 @@ pipeline {
 
         stage('Ansible Configure') {
             steps {
-                 sh 'ansible-playbook -i ansible/inventory ansible/playbook.yml'
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'tf-ec2-key',
+                        keyFileVariable: 'SSH_KEY',
+                        usernameVariable: 'SSH_USER'
+                    )
+                ]) {
+                    sh '''
+                        ansible-playbook \
+                            -i ansible/inventory \
+                            -u "$SSH_USER" \
+                            --private-key "$SSH_KEY" \
+                            ansible/playbook.yml
+                    '''        
             }
         }
     }
 }
+
