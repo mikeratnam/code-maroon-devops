@@ -33,10 +33,13 @@ resource "aws_instance" "machine-1" {
       "sudo systemctl enable httpd"
     ]
 
+    variable "ssh_key_path" {
+      type = string
+    }
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file(pathexpand("~/.ssh/devops-keys.pem"))
+      private_key = file(var.ssh_key_path)
       host        = self.public_ip
     }
   }
