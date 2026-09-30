@@ -19,25 +19,28 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                try {
-                withCredentials([
-                    sshUserPrivateKey(
-                        credentialsId: 'tf-ec2-key',
-                        keyFileVariable: 'SSH_KEY',
-                        usernameVariable: 'SSH_USER'
-                    )
-                ]) {
-                    withCredentials([
-                        [$class: 'AmazonWebServicesCredentialsBinding',
-                         credentialsId: 'aws-terraform']
-                    ]) {
-                        sh 'TF_VAR_ssh_key_path="$SSH_KEY" terraform apply -auto-approve'
+                script {
+                    try {
+                        withCredentials([
+                            sshUserPrivateKey(
+                                credentialsId: 'tf-ec2-key',
+                                keyFileVariable: 'SSH_KEY',
+                                usernameVariable: 'SSH_USER'
+                            )
+                        ]) {
+                            withCredentials([
+                                [$class: 'AmazonWebServicesCredentialsBinding',
+                                 credentialsId: 'aws-terraform']
+                            ]) {
+                                sh 'TF_VAR_ssh_key_path="$SSH_KEY" terraform apply -auto-approve'
+                            }
+                        }
+                    } catch (err) {
+                        sh 'terraform destroy -auto-approve'
+                        throw err
                     }
                 }
-            }  catch (err) {
-                sh 'terraform destroy -auto-approve'
-                throw err
-            }    
+            }
         }
     }
 }
