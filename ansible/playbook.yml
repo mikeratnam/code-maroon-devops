@@ -7,9 +7,9 @@
 
     - name: Stop Apache
       systemd:
-      name: httpd
-      state: stopped
-      enabled: no
+        name: httpd
+        state: stopped
+        enabled: no
 
     - name: Install Nginx
       dnf:
