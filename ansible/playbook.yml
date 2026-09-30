@@ -3,6 +3,12 @@
   hosts: web
   become: yes
 
+- name: Stop Apache
+  systemd:
+    name: httpd
+    state: stopped
+    enabled: no
+
   tasks:
     - name: Install Nginx
       dnf:
