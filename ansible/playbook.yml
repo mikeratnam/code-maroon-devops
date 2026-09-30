@@ -4,13 +4,13 @@
   become: yes
 
   tasks:
-    - name: Install Apache
+    - name: Install Nginx
       dnf:
-        name: httpd
+        name: nginx
         state: present
 
-    - name: Start Apache
+    - name: Start Nginx
       systemd:
-        name: httpd
+        name: nginx
         state: started
         enabled: yes
