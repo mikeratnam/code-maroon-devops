@@ -11,6 +11,12 @@ pipeline {
             }
         }
 
+        stage('Check Terraform State') {
+            steps {
+                sh 'terraform state show aws_instance.machine-1'
+            }
+        }
+
         stage('Terraform Apply') {
             steps {
                 withCredentials([
