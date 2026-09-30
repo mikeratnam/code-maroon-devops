@@ -59,8 +59,9 @@ pipeline {
                             --private-key "$SSH_KEY" \
                             ansible/playbook.yml
                     '''        
+                }
             }
         }
     }
-}
+} 
 
