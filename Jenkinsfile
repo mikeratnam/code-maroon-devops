@@ -16,7 +16,7 @@ pipeline {
                              credentialsId: 'aws-terraform']
                         ]) {
 
-                            sh 'terraform init'
+                            sh 'terraform init -migrate-state -input=false'
 
                             sh 'terraform state show aws_instance.machine-1'
 
