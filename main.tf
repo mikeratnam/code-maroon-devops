@@ -1,3 +1,11 @@
+terraform {
+  backend "s3" {
+    bucket = "code-maroon-tfstate-1-540393117528-ap-south-1-an"
+    key    = "terraform.tfstate"
+    region = "ap-south-1"
+  }
+}
+
 provider "aws" {
   region = "ap-south-1"
 }
